@@ -24,15 +24,16 @@ if(dialog){
 document.getElementById('copyright-year').textContent=new Date().getFullYear();
 const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
 if(!reduceMotion.matches&&'IntersectionObserver' in window){
- const revealTargets=document.querySelectorAll('.section-intro,.space-card,.story-visual,.story-copy,.gallery-item,.art-grid>img,.art-copy,.amenity,.contact-grid>div,.faq>div,.intro>div');
+ const revealTargets=document.querySelectorAll('.picture-nav-card,.section-intro,.space-card,.story-visual,.story-copy,.gallery-item,.art-grid>img,.art-copy,.amenity,.contact-grid>div,.faq>div,.intro>div');
  const revealObserver=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('is-revealed');revealObserver.unobserve(entry.target)}})},{threshold:.08,rootMargin:'0px 0px -24px 0px'});
  document.documentElement.classList.add('motion-ready');
  revealTargets.forEach((element,index)=>{element.setAttribute('data-reveal','');if(element.classList.contains('gallery-item')||element.classList.contains('amenity'))element.style.setProperty('--reveal-delay',(index%3)*65+'ms');revealObserver.observe(element)});
  reduceMotion.addEventListener('change',event=>{if(event.matches){document.documentElement.classList.remove('motion-ready');revealObserver.disconnect()}});
 }
+const initialView=new URLSearchParams(window.location.search).get('view');if(initialView&&dialog){const initialFilter=document.querySelector('.filter[data-filter="'+(['interiors','outdoors','details'].includes(initialView)?initialView:'all')+'"]');if(initialFilter)initialFilter.click()}
 const header=document.querySelector('.site-header');
 const progress=document.createElement('div');progress.className='scroll-progress';progress.setAttribute('aria-hidden','true');header.append(progress);
-const topButton=document.createElement('button');topButton.type='button';topButton.className='back-top';topButton.setAttribute('aria-label','Back to top');topButton.textContent='↑';topButton.hidden=true;document.body.append(topButton);topButton.addEventListener('click',()=>window.scrollTo({top:0,behavior:reduceMotion.matches?'instant':'smooth'}));
+const topButton=document.createElement('button');topButton.type='button';topButton.className='back-top';topButton.setAttribute('aria-label','Back to top');topButton.textContent='Top';topButton.hidden=true;document.body.append(topButton);topButton.addEventListener('click',()=>window.scrollTo({top:0,behavior:reduceMotion.matches?'instant':'smooth'}));
 let ticking=false;
 function updateScroll(){const max=document.documentElement.scrollHeight-window.innerHeight;progress.style.transform='scaleX('+(max>0?Math.min(1,Math.max(0,window.scrollY/max)):0)+')';header.classList.toggle('is-scrolled',window.scrollY>25);topButton.hidden=window.scrollY<600;ticking=false}
 window.addEventListener('scroll',()=>{if(!ticking){requestAnimationFrame(updateScroll);ticking=true}},{passive:true});window.addEventListener('resize',updateScroll);updateScroll();
