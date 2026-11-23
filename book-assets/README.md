@@ -1,0 +1,1 @@
+Public artwork for the Kizmari Noir digital-book sales page. This folder contains the approved Kizmari logo, cover artwork, selected preview pages, and digital-device mockup. The complete paid PDF is delivered through Selar and is not included here.
